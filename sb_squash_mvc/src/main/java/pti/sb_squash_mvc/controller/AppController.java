@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pti.sb_squash_mvc.dto.ErrorDto;
 import pti.sb_squash_mvc.dto.GameDtoList;
 import pti.sb_squash_mvc.dto.UserDto;
 import pti.sb_squash_mvc.service.AppService;
@@ -64,4 +65,21 @@ public class AppController {
 		
 		return targetPage;
 	}
+	
+	@GetMapping("/logout") 
+	public String logout(
+			Model model,
+			@RequestParam("userid") int userId
+			) {
+		
+		ErrorDto errorDto = new ErrorDto("Succsessfull logout!");
+		model.addAttribute("errordto", errorDto);
+		
+		return "login.html";
+	}
+	
+	
+	
+	
+	
 }

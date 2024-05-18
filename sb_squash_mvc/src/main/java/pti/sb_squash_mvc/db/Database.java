@@ -115,4 +115,77 @@ public class Database {
 //		
 //	}
 	
+	public User getPlayerById(int id) {
+		
+		User user = null;
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		user = session.get(User.class, id);
+		
+		tx.commit();
+		session.close();
+		
+		return user;
+	}
+	
+	public List<Game> getAllGames() {
+		
+		List<Game> gameList = null;
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		SelectionQuery<Game> query = 
+				session.createSelectionQuery("SELECT g FROM Game g", Game.class);
+		
+		gameList = query.getResultList();
+		
+		tx.commit();
+		session.close();
+		
+		return gameList;
+	}
+	
+	public void updatePlayer(User user) {
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+
+		session.merge(user);
+		
+		tx.commit();
+		session.close();
+	}
+	
+	public void saveLocation(Location location) {
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		session.persist(location);
+		
+		tx.commit();
+		session.close();
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
