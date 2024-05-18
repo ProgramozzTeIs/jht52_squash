@@ -42,6 +42,22 @@ public class Database {
 		return players;
 	}
 	
+	public List<Location> getAllLocations(){
+		
+		List<Location> locations = null;
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		SelectionQuery<Location> query = session.createSelectionQuery("SELECT l FROM Location l", Location.class);
+		locations = query.getResultList();
+		
+		tx.commit();
+		session.close();
+		
+		return locations;
+	}
+	
 	
 	public void saveGame(Game game) {
 
@@ -52,6 +68,18 @@ public class Database {
 		
 		tx.commit();
 		session.close();
+	}
+	
+	public void savePlayer(User user) {
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		session.persist(user);
+		
+		tx.commit();
+		session.close();
+		
 	}
 	
 	
@@ -70,5 +98,21 @@ public class Database {
 		
 		return location;
 	}
+	
+//	public User getPlayerByNameAndPwd(String name, String password) {
+//		
+//		User user = null;
+//		
+//		Session session = sessionFactory.openSession();
+//		Transaction tx = session.beginTransaction();
+//		
+//		
+//		
+//		tx.commit();
+//		session.close();
+//		
+//		return user;
+//		
+//	}
 	
 }
