@@ -62,7 +62,7 @@ public class AppService {
 				
 				userDto = convertUserToUserDto(user);
 				
-				List<Location> locations = db.getAllLocation();
+				List<Location> locations = db.getAllLocations();
 				List<LocationDto> locationDtos = new ArrayList<>();
 				
 				int locationId = 0;
