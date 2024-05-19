@@ -66,4 +66,34 @@ public class GameDtoList {
 				+ ", loggedInUser=" + loggedInUser + "]";
 	}
 	
+	public void sortGameDates() {
+		
+		for(int index = 0; index < gameDtos.size(); index++) {
+			
+			GameDto currentGameDto = gameDtos.get(index);
+			
+			for(int secIndex = index+1; secIndex < gameDtos.size(); secIndex++) {
+				
+				GameDto nextGameDto = gameDtos.get(secIndex);
+				
+				if(currentGameDto.getDate().isBefore(nextGameDto.getDate())) {
+					
+					gameDtos.set(secIndex, currentGameDto);
+					gameDtos.set(index, nextGameDto);
+					index--;
+					break;
+					
+				}
+				
+			}
+			
+		}
+		
+	}
+	
 }
+
+
+
+
+

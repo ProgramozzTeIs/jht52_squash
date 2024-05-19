@@ -9,7 +9,7 @@
 	<body>
 
 		<form action="/logout" method="post">
-			<input type="hidden" name="userid" th:value="userdto.getId()"/>	
+			<input type="hidden" name="userid" th:value="gamedtolist.getLoggedInUser().getId()"/>	
 			<input type="submit" placeholder="logout"/>
 		
 		</form>

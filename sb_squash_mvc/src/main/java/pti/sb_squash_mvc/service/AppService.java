@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pti.sb_squash_mvc.db.Database;
+import pti.sb_squash_mvc.dto.AdminDto;
 import pti.sb_squash_mvc.dto.GameDto;
 import pti.sb_squash_mvc.dto.GameDtoList;
 import pti.sb_squash_mvc.dto.LocationDto;
@@ -123,8 +124,122 @@ public class AppService {
 		
 		return userDto;
 	}
-	
-	
-	
 
+	public User getUserByNameAndPassword(String name, String password) {
+		
+		User user = null;
+		
+		user = db.getPlayerByNameAndPwd(name, password);
+		
+		return user;
+	}
+
+	public AdminDto getAdminDto(User user) {
+		
+		AdminDto adminDto = null;
+		
+		List<LocationDto> allLocations = new ArrayList<>();
+		List<UserDto> allPlayers = new ArrayList<>();
+		
+		List<User> usersFromDb = db.getAllPlayer();
+		List<Location> locationsFromDb = db.getAllLocations();
+		
+		for(int index = 0; index < usersFromDb.size(); index++) {
+			
+			User currentUser = usersFromDb.get(index);
+			UserDto userDto = new UserDto(currentUser.getId(),currentUser.getName());
+			allPlayers.add(userDto);
+		}
+		
+		for(int index = 0; index < locationsFromDb.size(); index++) {
+			
+			Location currentLocation = locationsFromDb.get(index);
+			LocationDto locationDto = new LocationDto(currentLocation.getId(), currentLocation.getName());
+			allLocations.add(locationDto);
+		}
+		
+		adminDto = new AdminDto(
+				user.getId(),
+				allPlayers,
+				allLocations
+				);
+		
+		return adminDto;
+	}
+
+	public void logoutUser(int userId) {
+		
+		User user = db.getPlayerById(userId);
+		user.setLoggedin(false);
+		db.updatePlayer(user);
+		
+	}
+
+	public GameDtoList getGameDtoList(UserDto userDto) {
+		
+		GameDtoList gameDtoList = null;
+
+		List<GameDto> gameDtos = new ArrayList<>();
+		List<LocationDto> allLocations = new ArrayList<>();
+		List<UserDto> allPlayers = new ArrayList<>();
+		
+		List<Game> gamesFromDb = db.getAllGames();
+		List<User> usersFromDb = db.getAllPlayer();
+		List<Location> locationsFromDb = db.getAllLocations();
+		
+		for(int index = 0; index < gamesFromDb.size(); index++) {
+			
+			Game currentGame = gamesFromDb.get(index);
+			User player1 = db.getPlayerById(currentGame.getPlayer1_id());
+			User player2 = db.getPlayerById(currentGame.getPlayer2_id());
+			Location location = db.getLocationById(currentGame.getLocation_id());
+			
+			GameDto gameDto = new GameDto(
+					player1.getName(),
+					currentGame.getPlayer1_score(),
+					player2.getName(),
+					currentGame.getPlayer2_score(),
+					location.getName(),
+					currentGame.getDate()
+					);
+			gameDtos.add(gameDto);
+		}
+		
+		for(int index = 0; index < usersFromDb.size(); index++) {
+			
+			User currentUser = usersFromDb.get(index);
+			UserDto currentUserDto = new UserDto(currentUser.getId(),currentUser.getName());
+			allPlayers.add(currentUserDto);
+		}
+		
+		for(int index = 0; index < locationsFromDb.size(); index++) {
+			
+			Location currentLocation = locationsFromDb.get(index);
+			LocationDto locationDto = new LocationDto(currentLocation.getId(), currentLocation.getName());
+			allLocations.add(locationDto);
+		}
+		
+		return gameDtoList;
+	}
+
+	public void loginUser(int userId) {
+		
+		User user = db.getPlayerById(userId);
+		user.setLoggedin(true);
+		db.updatePlayer(user);
+		
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+

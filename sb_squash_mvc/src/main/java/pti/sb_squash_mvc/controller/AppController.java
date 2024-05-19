@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import pti.sb_squash_mvc.dto.AdminDto;
 import pti.sb_squash_mvc.dto.ErrorDto;
 import pti.sb_squash_mvc.dto.GameDtoList;
 import pti.sb_squash_mvc.dto.UserDto;
+import pti.sb_squash_mvc.model.User;
 import pti.sb_squash_mvc.service.AppService;
 
 @Controller
@@ -83,14 +86,78 @@ public class AppController {
 			@RequestParam("userid") int userId
 			) {
 		
+		service.logoutUser(userId);
 		ErrorDto errorDto = new ErrorDto("Succsessfull logout!");
-		model.addAttribute("errordto", errorDto);
+		model.addAttribute("error", errorDto);
 		
 		return "login.html";
 	}
 	
-	
-	
+	@PostMapping("/login")
+	public String login(
+			Model model,
+			@RequestParam("name") String name,
+			@RequestParam("pwd") String password
+			) {
+		
+		String targetPage = "";
+		ErrorDto errorDto = new ErrorDto("Not valid name or password, try again!");
+		
+		User user = service.getUserByNameAndPassword(name,password);
+		
+		/**Ha megvan a User akkor folytatjuk hogy melyik oldalon kössünk ki*/
+		if(user != null) {
+			
+			/**Elsőnek megnézem adminnal van-e dolgunk és ha igen akkor admin.html a cél*/
+			if(user.getRole().equals("admin")) {
+				
+				AdminDto adminDto = service.getAdminDto(user);
+				model.addAttribute("admindto", adminDto);
+				targetPage = "admin.html";
+			}
+			else {
+				
+				/**Ha nem változtatta meg a jelszavát akkor a megváltoztató oldal a cél*/
+				if(user.isChangedPwd() == false) {
+					
+					UserDto userDto = new UserDto(user.getId(), user.getName());
+					model.addAttribute("userDto", userDto);
+					targetPage = "changepwd.html";
+				}
+				/**Ha megváltoztatta már akkor pedig game.html*/
+				else if(user.isChangedPwd() == true){
+					
+					UserDto userDto = new UserDto(user.getId(), user.getName());
+					GameDtoList gameDtoList = service.getGameDtoList(userDto);
+					gameDtoList.sortGameDates();
+					service.loginUser(user.getId());
+					
+					model.addAttribute("gamedtolist", gameDtoList);
+					targetPage = "game.html";
+				}
+				
+			}
+			
+		}
+		/**Ha nincs meg a User akkor Hibás Név vagy Pwd*/
+		else {
+			
+			model.addAttribute("error", errorDto);
+			targetPage = "login.html";
+		}
+		
+		
+		return targetPage;
+	}
 	
 	
 }
+
+
+
+
+
+
+
+
+
