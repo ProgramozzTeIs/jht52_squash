@@ -25,6 +25,7 @@ public class Database {
 		
 		sessionFactory = config.buildSessionFactory();
 	}
+	
 	public List<User> getAllPlayer(){
 		
 		List<User> players = null;
@@ -99,21 +100,32 @@ public class Database {
 		return location;
 	}
 	
-//	public User getPlayerByNameAndPwd(String name, String password) {
-//		
-//		User user = null;
-//		
-//		Session session = sessionFactory.openSession();
-//		Transaction tx = session.beginTransaction();
-//		
-//		
-//		
-//		tx.commit();
-//		session.close();
-//		
-//		return user;
-//		
-//	}
+	public User getPlayerByNameAndPwd(String name, String password) {
+		
+		User user = null;
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		SelectionQuery<User> query = 
+				session.createSelectionQuery(
+						"SELECT u FROM User u WHERE u.name = ?1 && u.password = ?2", 
+						User.class);
+		query.setParameter(1, name);
+		query.setParameter(2, password);
+		List<User> users = query.getResultList();
+		
+		if(users.size() > 0) {
+			
+			user = users.get(0);
+		}
+		
+		tx.commit();
+		session.close();
+		
+		return user;
+		
+	}
 	
 	public User getPlayerById(int id) {
 		

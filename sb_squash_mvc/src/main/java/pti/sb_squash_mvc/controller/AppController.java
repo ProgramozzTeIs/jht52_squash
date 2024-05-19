@@ -66,6 +66,15 @@ public class AppController {
 		return targetPage;
 	}
 	
+	@GetMapping("/game/search/player")
+	public String getAllGameByPlayer(
+				Model model, 
+				@RequestParam("userid") int userId,
+				@RequestParam("searchedplayerid")
+			
+			)
+	
+	
 	@GetMapping("/logout") 
 	public String logout(
 			Model model,
