@@ -1,6 +1,7 @@
 package pti.sb_squash_mvc.dto;
 
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
 
 public class GameDto {
 
@@ -9,11 +10,14 @@ public class GameDto {
 	private String player2Name;
 	private int player2Score;
 	private String locationName;
-	private LocalDate date;
+	private LocalDateTime date;
 	
 	
+	
+
+
 	public GameDto(String player1Name, int player1Score, String player2Name, int player2Score, String locationName,
-			LocalDate date) {
+			LocalDateTime date) {
 		super();
 		this.player1Name = player1Name;
 		this.player1Score = player1Score;
@@ -74,12 +78,12 @@ public class GameDto {
 	}
 
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 

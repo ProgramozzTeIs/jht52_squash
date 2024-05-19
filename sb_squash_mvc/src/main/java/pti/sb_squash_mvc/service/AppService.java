@@ -79,18 +79,19 @@ public class AppService {
 				}
 				List<GameDto> gameDtos = new ArrayList<>();
 				List<Game> allGames = db.getAllGames();
-				List<Game> allGamesByLocation = new ArrayList<>();
+				List<GameDto> allGamesByLocation = new ArrayList<>();
 				
 				for(int index = 0; index < allGames.size(); index++) {
 					Game currentGame = allGames.get(index);
 					if(currentGame.getLocation_id() == locationId ){
 						GameDto gameDto = convertGameToGameDto(currentGame);
-						gameDtos.add(gameDto);
+						
+						allGamesByLocation.add(gameDto);
 					}
 				}
 				
 				
-				//gameDtoList = new GameDtoList(gameDtos,userDtos,locationDtos,userDto )
+				gameDtoList = new GameDtoList(gameDtos,userDtos,locationDtos,userDto );
 				
 				
 			}else {
@@ -98,6 +99,29 @@ public class AppService {
 			}
 		
 		return gameDtoList;
+	}
+
+	private GameDto convertGameToGameDto(Game game) {
+		GameDto gameDto = null;
+		User user1 = db.getPlayerById(game.getPlayer1_id());
+		User user2 = db.getPlayerById(game.getPlayer2_id());
+		Location location = db.getLocationById(game.getLocation_id());
+		
+		gameDto = new GameDto(
+				user1.getName(),
+				game.getPlayer1_score(),
+				user2.getName(),
+				game.getPlayer2_score(),
+				location.getName(),
+				game.getDate());
+		
+		return gameDto;
+	}
+
+	private UserDto convertUserToUserDto(User user) {
+		UserDto userDto = new UserDto(user.getId(),user.getName());
+		
+		return userDto;
 	}
 	
 	

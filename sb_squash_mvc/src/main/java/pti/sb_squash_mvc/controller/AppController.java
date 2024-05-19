@@ -48,6 +48,8 @@ public class AppController {
 		String targetPage = "";
 		
 		GameDtoList gameDtoList = service.getAllGameByLocation(userId, location);
+		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
+		
 		
 		if(gameDtoList != null) {
 			
@@ -55,13 +57,13 @@ public class AppController {
 			targetPage = "game.html";
 			
 		}else {
-			//ErrorDto errordto = new ErrorDto("Sorry you need to log in!!!);
-			//model.addAttribute("error", errorDto);
+			 
+			model.addAttribute("error", errorDto);
 			
 			targetPage = "login.html";  
 		}
 		
-		 
+		
 		
 		return targetPage;
 	}
