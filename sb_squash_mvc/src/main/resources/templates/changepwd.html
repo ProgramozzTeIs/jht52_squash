@@ -7,7 +7,15 @@
 	
 	
 	<body>
-	
+		<p>Please change your password!!!</p>
+			<form action="/login/change" method="post">
+				<input type="hidden" name="userid" th:value = "${userDto.getId()}"/>
+				<input type="password" name="newpsw" placeholder="New Password"/>
+				<input type="submit"/>
+			
+			</form>
+			
+		
 	
 	</body>
 </html>
