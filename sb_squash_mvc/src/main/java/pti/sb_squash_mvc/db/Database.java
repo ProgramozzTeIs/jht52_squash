@@ -203,6 +203,11 @@ public class Database {
 		return gameList;
 	}
 
+	public void persistGame(Game game) {
+		
+		
+	}
+
 	
 	
 }

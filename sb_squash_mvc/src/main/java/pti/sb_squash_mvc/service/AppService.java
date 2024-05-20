@@ -1,5 +1,6 @@
 package pti.sb_squash_mvc.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -272,6 +273,24 @@ public class AppService {
 			user = db.getPlayerByNameAndPwd(name, password);
 			
 			return user;
+	}
+
+	public AdminDto registerNewGame(int adminId, int player1_id, int score_player1, int player2_id, int score_player2,
+			int locationId, LocalDateTime date) {
+		
+		AdminDto adminDto = null;
+		
+		User user = db.getPlayerById(adminId);
+		if(user.getRole().equals("admin")) {
+			
+			Game game = new Game(0, player1_id, score_player1, player2_id, score_player2, locationId, date);
+			db.saveGame(game);
+			
+			adminDto = getAdminDto(user);
+			
+		}
+		
+		return adminDto;
 	}
 
 	

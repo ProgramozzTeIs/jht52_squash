@@ -1,5 +1,7 @@
 package pti.sb_squash_mvc.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -202,6 +204,46 @@ public class AppController {
 				
 	}
 
+	@PostMapping("/admin/reg/game")
+	public String registerNewGame(
+				Model model,
+				@RequestParam("adminid") int adminId,
+				@RequestParam("player1id") int player1_id,
+				@RequestParam("player1score") int score_player1,
+				@RequestParam("player2id") int player2_id,
+				@RequestParam("player2score") int score_player2,
+				@RequestParam("locationid") int locationId,
+				@RequestParam("localdate") LocalDateTime date
+			
+			) {
+		
+		String targetPage = "";
+		
+		AdminDto adminDto = service.registerNewGame(
+				adminId, player1_id, 
+				score_player1, 
+				player2_id, 
+				score_player2, 
+				locationId, 
+				date);
+		
+		ErrorDto errorDto = new ErrorDto("Sorry, this function is only available with the admin role");
+		
+		if(adminDto != null) {
+			
+			model.addAttribute("admindto", adminDto);
+			targetPage = "admin.html";
+		
+		}else {
+			
+			model.addAttribute("errordto", errorDto);
+			targetPage = "login.html";
+		}
+		
+		return targetPage;
+		
+	}
+	
 	
 	
 }
