@@ -7,6 +7,22 @@
 	
 	
 	<body>
+		<form action="/admin/reg/location" method ="post">
+		
+		<p>Insert new location here!!</p>
+			<input type ="hidden" name ="adminid" th:value="${admindto.getUserid()}"/>
+			<input type ="text" name ="locname" placeholder ="LOCATION NAME"/>
+			<input type ="text" name ="address" placeholder ="ADDRESS"/>
+			<input type ="number" name ="fee"  placeholder="RENTAL FEE"/>
+			<input type ="submit"/>
+		</form>
+	
+		<p>Register player here</p>
+		<form action="/admin/reg/player" method="post">
+			<input type="hidden" name="adminid" th:value="${admindto.getUserid()}"/>
+			<input type="text" name="playername" placeholder="Player Name"/>
+			<input type="submit"/>
+		</form>
 	
 	
 	</body>

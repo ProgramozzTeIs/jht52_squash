@@ -7,6 +7,7 @@
 	
 	
 	<body>
+
 	
 		<p>Please log in</p>
 		
@@ -16,7 +17,8 @@
 			<input type="submit"/>
 		</form>
 	
-		<p th:if="${error} != null" th:text="error.getMessage()"></p>
+		<p th:if="${error} != null" th:text="${error.getMessage()}"></p>
+
 	
 	</body>
 </html>

@@ -4,12 +4,32 @@
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
 	</head>
-
+	
 	
 	<body>
+		<p>All Matches</p>
+		<table>
+			<tr>
+				<th>Player1</th>
+				<th>Player1 Score</th>
+				<th>Player2</th>
+				<th>Player2 Score</th>
+				<th>Location</th>
+				<th>Date</th>
+			</tr>
+			<tr th:each="gamedto : ${gamedtolist.getGameDtos()}" >
+				<td th:text= "${gamedto.getPlayer1Name()}"></td>
+				<td th:text= "${gamedto.getPlayer1Score()}"></td>
+				<td th:text= "${gamedto.getPlayer2Name()}"></td>
+				<td th:text= "${gamedto.getPlayer2Score()}"></td>
+				<td th:text= "${gamedto.getLocationName()}"></td>
+				<td th:text= "${gamedto.getDate()}"></td>
+			</tr>	
+				
+		</table>
 
 		<form action="/logout" method="post">
-			<input type="hidden" name="userid" th:value="gamedtolist.getLoggedInUser().getId()"/>	
+			<input type="hidden" name="userid" th:value="${gamedtolist.getLoggedInUser().getId()}"/>	
 			<input type="submit" placeholder="logout"/>
 		
 		</form>
@@ -19,7 +39,7 @@
 		<p> You can find here all matches for the choosen Location</p>
 		
 		<form th:if = "${gamedtolist} != null " action="/game/search/location" method="get">
-			<input type="hidden" name="userid" th:value="userdto.getId()"/>
+			<input type="hidden" name="userid" th:value="${userdto.getId()}"/>
 			<select name ="location" >
 			
 				<option th:each = "locationDto  : ${gamedtolist.getAllLocations()}" th:text = "${locationDto.getName()}"
@@ -28,6 +48,22 @@
 			</select>
 			<input type = "submit"/>
 		</form>
+		
+		<br/>
+		
+		<p> Choose a Player! </p>
+		
+		<form th:if = "${gamedtolist} != null " action="/game/search/player " method="get">
+			<input type="hidden" name="userid" th:value="${userdto.getId()}"/>
+			<select name ="searchedplayer" >
+			
+				<option th:each = "userDto  : ${gamedtolist.getAllPlayers()}" th:text = "${userDto.getName()}"
+					th:value ="${userDto.getName()}"/>
+				
+			</select>
+			<input type = "submit"/>
+		</form>
+		
 	
 	</body>
 </html>

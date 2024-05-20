@@ -109,7 +109,7 @@ public class Database {
 		
 		SelectionQuery<User> query = 
 				session.createSelectionQuery(
-						"SELECT u FROM User u WHERE u.name = ?1 && u.password = ?2", 
+						"SELECT u FROM User u WHERE u.name = ?1 AND u.password = ?2", 
 						User.class);
 		query.setParameter(1, name);
 		query.setParameter(2, password);

@@ -2,6 +2,7 @@ package pti.sb_squash_mvc.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,7 +94,7 @@ public class AppService {
 				
 				
 				gameDtoList = new GameDtoList(gameDtos,userDtos,locationDtos,userDto );
-				
+				gameDtoList.sortGameDates();
 				
 			}else {
 				gameDtoList = null;
@@ -125,14 +126,6 @@ public class AppService {
 		return userDto;
 	}
 
-	public User getUserByNameAndPassword(String name, String password) {
-		
-		User user = null;
-		
-		user = db.getPlayerByNameAndPwd(name, password);
-		
-		return user;
-	}
 
 	public AdminDto getAdminDto(User user) {
 		
@@ -229,6 +222,102 @@ public class AppService {
 		db.updatePlayer(user);
 		
 	}
+
+	public AdminDto registerNewLocation(int adminId, String locName, String locAddress, int fee) {
+		AdminDto adminDto = null;
+		
+		User user = db.getPlayerById(adminId);
+		if(user.getRole().equals("admin")) {
+			Location locatoin = new Location(0,locName,locAddress,fee);
+			db.saveLocation(locatoin);
+			adminDto = getAdminDto(user);
+		}
+		else {
+			adminDto = null;
+		}
+		
+		return adminDto;
+	}
+	
+	public GameDtoList getAllGameByPlayerId(int userId, int searchedPlayerId) {
+			
+			GameDtoList gameDtoList = null;
+			
+			List<UserDto> userDtos = new ArrayList<>();
+			List<User> allUsers = db.getAllPlayer();
+			for(int index = 0; index < allUsers.size(); index++) {
+				
+				User currentUser = allUsers.get(index);
+				UserDto currentUserDto = new UserDto(
+							currentUser.getId(),
+							currentUser.getName()
+						);
+				userDtos.add(currentUserDto);
+			}
+			
+			UserDto userDto = null;
+			User user = db.getPlayerById(userId);
+			if(user.isLoggedin() == true) {
+				
+				
+			}
+			
+			return null;
+	}
+	
+	public User getUserByNameAndPassword(String name, String password) {
+			
+			User user = null;
+			
+			user = db.getPlayerByNameAndPwd(name, password);
+			
+			return user;
+	}
+
+	public AdminDto regPlayer(int adminId, String playerName) {
+		
+		AdminDto adminDto = null;
+		User user = db.getPlayerById(adminId);
+		
+		if(user.isLoggedin() && user.getRole().equals("admin")) {
+			
+			Random random = new Random();
+			
+			String randomPassword = "";
+			String randomCharacters = "";
+			
+			String randomNumber = 100 + random.nextInt(900) + "";
+			
+			for(int index = 0; index < 3; index++) {
+				
+				char randomChar = (char) ('a' + random.nextInt(26)) ;
+				randomCharacters += randomChar;
+		
+			}
+			
+			randomPassword = randomCharacters + randomNumber;
+			
+			User registeredPlayer = new User(
+					0,
+					playerName,
+					randomPassword,
+					"player",
+					false,
+					false
+					); 
+			
+			db.savePlayer(registeredPlayer);
+			
+			adminDto = getAdminDto(user);
+			
+		}
+		
+		return adminDto;
+	}
+
+	
+
+	
 	
 }
 
