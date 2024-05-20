@@ -28,6 +28,22 @@
 			</select>
 			<input type = "submit"/>
 		</form>
+		
+		<br/>
+		
+		<p> Choose a Player! </p>
+		
+		<form th:if = "${gamedtolist} != null " action="/game/search/player " method="get">
+			<input type="hidden" name="userid" th:value="userdto.getId()"/>
+			<select name ="searchedplayer" >
+			
+				<option th:each = "userDto  : ${gamedtolist.getAllPlayers()}" th:text = "${userDto.getName()}"
+					th:value ="${userDto.getName()}"/>
+				
+			</select>
+			<input type = "submit"/>
+		</form>
+		
 	
 	</body>
 </html>
