@@ -1,5 +1,6 @@
 package pti.sb_squash_mvc.db;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -181,6 +182,28 @@ public class Database {
 		tx.commit();
 		session.close();
 	}
+
+	public List<Game> getAllGamesByPlayerId(int searchedPlayerId) {
+		
+		List<Game> gameList = null;
+		
+		Session session = sessionFactory.openSession();
+		Transaction tx = session.beginTransaction();
+		
+		SelectionQuery<Game> query = 
+				session.createSelectionQuery("SELECT g FROM Game g WHERE g.player1_id = ?1 OR g.player2_id = ?2", Game.class);
+		query.setParameter(1, searchedPlayerId);
+		query.setParameter(2, searchedPlayerId);
+		
+		gameList = query.getResultList();
+		
+		tx.commit();
+		session.close();
+		
+		return gameList;
+	}
+
+	
 	
 }
 

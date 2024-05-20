@@ -238,30 +238,29 @@ public class AppService {
 		return adminDto;
 	}
 	
-	public GameDtoList getAllGameByPlayerId(int userId, int searchedPlayerId) {
+	public GameDtoList getAllGamesByPlayerId(int userId, int searchedPlayerId) {
 			
 			GameDtoList gameDtoList = null;
 			
-			List<UserDto> userDtos = new ArrayList<>();
-			List<User> allUsers = db.getAllPlayer();
-			for(int index = 0; index < allUsers.size(); index++) {
-				
-				User currentUser = allUsers.get(index);
-				UserDto currentUserDto = new UserDto(
-							currentUser.getId(),
-							currentUser.getName()
-						);
-				userDtos.add(currentUserDto);
-			}
-			
-			UserDto userDto = null;
 			User user = db.getPlayerById(userId);
-			if(user.isLoggedin() == true) {
+			if(user.isLoggedin()) {
 				
+				List<Game> games = db.getAllGamesByPlayerId(searchedPlayerId); //keresett játékos mérkőzései
 				
+				List<GameDto> gameDtos = new ArrayList<>();
+				for(int index = 0; index < games.size(); index++) {
+					
+					Game currentGame = games.get(index);
+					GameDto gameDto = convertGameToGameDto(currentGame);
+					gameDtos.add(gameDto);
+				}
+				
+				gameDtoList = new GameDtoList(gameDtos, null, null, null);
+			
 			}
 			
-			return null;
+			
+			return gameDtoList;
 	}
 	
 	public User getUserByNameAndPassword(String name, String password) {

@@ -181,7 +181,7 @@ public class AppController {
 		
 		String targetPage = "";
 		
-		GameDtoList gameDtoList = service.getAllGameByPlayerId(userId, searchedPlayerId);
+		GameDtoList gameDtoList = service.getAllGamesByPlayerId(userId, searchedPlayerId);
 		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
 		
 		if(gameDtoList != null) {
