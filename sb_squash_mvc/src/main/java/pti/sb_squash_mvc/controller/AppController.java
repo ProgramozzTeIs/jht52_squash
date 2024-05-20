@@ -150,6 +150,35 @@ public class AppController {
 		return targetPage;
 	}
 	
+	@PostMapping("/admin/reg/location")
+	public String registerNewLocaton(
+			Model model,
+			@RequestParam("adminid") int adminId,
+			@RequestParam("locname") String locName,
+			@RequestParam("adress") String locAddress,
+			@RequestParam("fee") int fee) {
+		
+		String targetPage = "";
+		
+		AdminDto adminDto = service.registerNewLocation( adminId,locName,locAddress,fee);
+		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
+		
+		if(adminDto != null) {
+			model.addAttribute("admindto", adminDto);
+			targetPage = "admin.html";
+			
+		}else {
+			 
+			model.addAttribute("error", errorDto);
+			
+			targetPage = "login.html";  
+		}
+		
+		
+		
+		return targetPage;
+	}
+	
 	
 }
 

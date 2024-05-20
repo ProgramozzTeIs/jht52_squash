@@ -93,7 +93,7 @@ public class AppService {
 				
 				
 				gameDtoList = new GameDtoList(gameDtos,userDtos,locationDtos,userDto );
-				
+				gameDtoList.sortGameDates();
 				
 			}else {
 				gameDtoList = null;
@@ -228,6 +228,22 @@ public class AppService {
 		user.setLoggedin(true);
 		db.updatePlayer(user);
 		
+	}
+
+	public AdminDto registerNewLocation(int adminId, String locName, String locAddress, int fee) {
+		AdminDto adminDto = null;
+		
+		User user = db.getPlayerById(adminId);
+		if(user.getRole().equals("admin")) {
+			Location locatoin = new Location(0,locName,locAddress,fee);
+			db.saveLocation(locatoin);
+			adminDto = getAdminDto(user);
+		}
+		else {
+			adminDto = null;
+		}
+		
+		return adminDto;
 	}
 	
 }
