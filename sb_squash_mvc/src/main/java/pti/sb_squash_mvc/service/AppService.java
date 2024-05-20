@@ -211,6 +211,8 @@ public class AppService {
 			allLocations.add(locationDto);
 		}
 		
+		gameDtoList = new GameDtoList(gameDtos,allPlayers,allLocations,userDto );
+				
 		return gameDtoList;
 	}
 
