@@ -18,13 +18,13 @@
 				<th>Date</th>
 			</tr>
 			<tr th:each="gamedto : ${gamedtolist.getGameDtos()}" >
-				<td th:text= "gamedto.getPlayer1Name()"></td>
-				<td th:text= "gamedto.getPlayer1Score()"></td>
-				<td th:text= "gamedto.getPlayer2Name()"></td>
-				<td th:text= "gamedto.getPlayer2Score()"></td>
-				<td th:text= "gamedto.getLocationName()"></td>
-				<td th:text= "gamedto.getDate()"></td>
-				
+				<td th:text= "${gamedto.getPlayer1Name()}"></td>
+				<td th:text= "${gamedto.getPlayer1Score()}"></td>
+				<td th:text= "${gamedto.getPlayer2Name()}"></td>
+				<td th:text= "${gamedto.getPlayer2Score()}"></td>
+				<td th:text= "${gamedto.getLocationName()}"></td>
+				<td th:text= "${gamedto.getDate()}"></td>
+			</tr>	
 				
 		</table>
 

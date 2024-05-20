@@ -238,6 +238,45 @@ public class AppService {
 		return adminDto;
 	}
 	
+//	public GameDtoList getAllGameByPlayerId(int userId, int searchedPlayerId) {
+//			
+//			GameDtoList gameDtoList = null;
+//			
+//			List<UserDto> userDtos = new ArrayList<>();
+//			List<User> allUsers = db.getAllPlayer();
+//			for(int index = 0; index < allUsers.size(); index++) {
+//				
+//				User currentUser = allUsers.get(index);
+//				UserDto currentUserDto = new UserDto(
+//							currentUser.getId(),
+//							currentUser.getName()
+//						);
+//				userDtos.add(currentUserDto);
+//			}
+//			
+//			UserDto userDto = null;
+//			User user = db.getPlayerById(userId);
+//			if(user.isLoggedin() == true) {
+//				
+//				
+//			}
+//			
+//			return null;
+//	}
+//	
+	public User getUserByNameAndPassword(String name, String password) {
+			
+			User user = null;
+			
+			user = db.getPlayerByNameAndPwd(name, password);
+			
+			return user;
+	}
+
+	
+
+	
+	
 }
 
 
