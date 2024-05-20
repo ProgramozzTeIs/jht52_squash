@@ -227,7 +227,7 @@ public class AppController {
 				locationId, 
 				date);
 		
-		ErrorDto errorDto = new ErrorDto("Sorry, this function is only available with the admin role");
+		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
 		
 		if(adminDto != null) {
 			
