@@ -172,32 +172,32 @@ public class AppController {
 		return targetPage;
 	}
 	
-//	@GetMapping("/game/search/player")
-//	public String getAllGameByPlayer(
-//				Model model, 
-//				@RequestParam("userid") int userId,
-//				@RequestParam("searchedplayer") int searchedPlayerId
-//			) {
-//		
-//		String targetPage = "";
-//		
-//		GameDtoList gameDtoList = service.getAllGameByPlayerId(userId, searchedPlayerId);
-//		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
-//		
-//		if(gameDtoList != null) {
-//			
-//			model.addAttribute("gamedtolist", gameDtoList);
-//			targetPage = "game.html";
-//		
-//		}else {
-//			
-//			model.addAttribute("error", errorDto);
-//			targetPage = "login.html";
-//		}
-//		
-//		return targetPage;
-//				
-//	}
+	@GetMapping("/game/search/player")
+	public String getAllGameByPlayer(
+				Model model, 
+				@RequestParam("userid") int userId,
+				@RequestParam("searchedplayer") int searchedPlayerId
+			) {
+		
+		String targetPage = "";
+		
+		GameDtoList gameDtoList = service.getAllGameByPlayerId(userId, searchedPlayerId);
+		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
+		
+		if(gameDtoList != null) {
+			
+			model.addAttribute("gamedtolist", gameDtoList);
+			targetPage = "game.html";
+		
+		}else {
+			
+			model.addAttribute("error", errorDto);
+			targetPage = "login.html";
+		}
+		
+		return targetPage;
+				
+	}
 
 	
 	
