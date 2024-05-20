@@ -4,12 +4,32 @@
 		<meta charset="UTF-8">
 		<title>Insert title here</title>
 	</head>
-
+	
 	
 	<body>
+		<p>All Matches</p>
+		<table>
+			<tr>
+				<th>Player1</th>
+				<th>Player1 Score</th>
+				<th>Player2</th>
+				<th>Player2 Score</th>
+				<th>Location</th>
+				<th>Date</th>
+			</tr>
+			<tr th:each="gamedto : ${gamedtolist.getGameDtos()}" >
+				<td th:text= "gamedto.getPlayer1Name()"></td>
+				<td th:text= "gamedto.getPlayer1Score()"></td>
+				<td th:text= "gamedto.getPlayer2Name()"></td>
+				<td th:text= "gamedto.getPlayer2Score()"></td>
+				<td th:text= "gamedto.getLocationName()"></td>
+				<td th:text= "gamedto.getDate()"></td>
+				
+				
+		</table>
 
 		<form action="/logout" method="post">
-			<input type="hidden" name="userid" th:value="userdto.getId()"/>	
+			<input type="hidden" name="userid" th:value="gamedtolist.getLoggedInUser().getId()"/>	
 			<input type="submit" placeholder="logout"/>
 		
 		</form>

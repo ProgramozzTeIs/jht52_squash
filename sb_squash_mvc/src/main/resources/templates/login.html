@@ -7,15 +7,18 @@
 	
 	
 	<body>
+
+	
+		<p>Please log in</p>
 		
-		<p>Please login! </p>
-		
-		<form action="/login" method="get">
+		<form action="/login" method="post">
 			<input type="text" name="name" placeholder="name"/>
-			<input type="text" name="password" placeholder="password"/>
+			<input type="password" name="pwd" placeholder="password"/>
 			<input type="submit"/>
-		
 		</form>
+	
+		<p th:if="${error} != null" th:text="error.getMessage()"></p>
+
 	
 	</body>
 </html>
