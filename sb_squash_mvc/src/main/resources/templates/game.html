@@ -38,7 +38,7 @@
 		
 		<p> You can find here all matches for the choosen Location</p>
 		
-		<form th:if = "${gamedtolist} != null " action="/game/search/location" method="get">
+		<form th:if = "${gamedtolist} != null " action="/game/search/location" method="post">
 			<input type="hidden" name="userid" th:value="userdto.getId()"/>
 			<select name ="location" >
 			

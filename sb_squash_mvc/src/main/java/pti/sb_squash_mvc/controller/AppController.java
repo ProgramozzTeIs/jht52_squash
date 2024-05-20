@@ -38,13 +38,16 @@ public class AppController {
 			@RequestParam("newpsw") String newPsw) {
 		
 		UserDto userDto = service.changePassword(userId, newPsw);
+		GameDtoList gameDtoList = service.getGameDtoList(userDto);
+		gameDtoList.sortGameDates();
 		
 		model.addAttribute("userdto", userDto);
+		model.addAttribute("gamedtolist", gameDtoList);
 		
 		return "game.html";
 	}
 	
-	@GetMapping("/game/search/location")
+	@PostMapping("/game/search/location")
 	public String getAllGameByLocataion(Model model,
 			@RequestParam("userid") int userId,
 			@RequestParam("location") String location) {
