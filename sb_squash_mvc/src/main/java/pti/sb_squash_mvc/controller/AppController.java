@@ -39,6 +39,8 @@ public class AppController {
 			@RequestParam("userid") int userId,
 			@RequestParam("newpsw") String newPsw) {
 		
+		
+		
 		UserDto userDto = service.changePassword(userId, newPsw);
 		GameDtoList gameDtoList = service.getGameDtoList(userDto);
 		gameDtoList.sortGameDates();
