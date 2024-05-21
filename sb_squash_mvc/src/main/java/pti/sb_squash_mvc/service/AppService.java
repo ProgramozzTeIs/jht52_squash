@@ -36,7 +36,10 @@ public class AppService {
 		if( user != null && user.isChangedPwd() == false) {
 			user.setPassword(newPsw);
 			user.setChangedPwd(true);
-			userDto = convertUserToUserDto(user);
+			
+			db.updatePlayer(user);
+			
+			userDto  = convertUserToUserDto(user);
 		}else {
 			userDto = null;
 		}
