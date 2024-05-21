@@ -41,11 +41,11 @@ public class AppController {
 		
 		
 		
-		UserDto userDto = service.changePassword(userId, newPsw);
-		GameDtoList gameDtoList = service.getGameDtoList(userDto);
-		gameDtoList.sortGameDates();
+		/* UserDto userDto = */service.changePassword(userId, newPsw);
+		GameDtoList gameDtoList = service.getGameDtoList(userId, null, null);
+//		gameDtoList.sortGameDates();
 		
-		model.addAttribute("userdto", userDto);
+//		model.addAttribute("userdto", userDto);
 		model.addAttribute("gamedtolist", gameDtoList);
 		
 		return "game.html";
@@ -57,7 +57,7 @@ public class AppController {
 			@RequestParam("location") String location) {
 		String targetPage = "";
 		
-		GameDtoList gameDtoList = service.getAllGameByLocation(userId, location);
+		GameDtoList gameDtoList = service.getGameDtoList(userId, location, null);
 		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
 		
 		
@@ -116,6 +116,8 @@ public class AppController {
 				targetPage = "admin.html";
 			}
 			else {
+				service.loginUser(user.getId());
+				
 				
 				/**Ha nem változtatta meg a jelszavát akkor a megváltoztató oldal a cél*/
 				if(user.isChangedPwd() == false) {
@@ -127,10 +129,9 @@ public class AppController {
 				/**Ha megváltoztatta már akkor pedig game.html*/
 				else if(user.isChangedPwd() == true){
 					
-					UserDto userDto = new UserDto(user.getId(), user.getName());
-					GameDtoList gameDtoList = service.getGameDtoList(userDto);
-					gameDtoList.sortGameDates();
-					service.loginUser(user.getId());
+//					UserDto userDto = new UserDto(user.getId(), user.getName());
+					GameDtoList gameDtoList = service.getGameDtoList(user.getId(), null, null);
+//					gameDtoList.sortGameDates();
 					
 					model.addAttribute("gamedtolist", gameDtoList);
 					targetPage = "game.html";
@@ -149,6 +150,42 @@ public class AppController {
 		
 		return targetPage;
 	}
+	
+	
+	@GetMapping("/game/search/player")
+	public String getAllGameByPlayer(
+				Model model, 
+				@RequestParam("userid") int userId,
+				@RequestParam("searchedplayer") int searchedPlayerId
+			) {
+		
+		String targetPage = "";
+		
+		GameDtoList gameDtoList = service.getGameDtoList(userId, null, searchedPlayerId);
+		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
+		
+		if(gameDtoList != null) {
+			
+			model.addAttribute("gamedtolist", gameDtoList);
+			targetPage = "game.html";
+		
+		}else {
+			
+			model.addAttribute("error", errorDto);
+			targetPage = "login.html";
+		}
+		
+		return targetPage;
+				
+	}
+	
+	
+	
+	/** ------------------------------------------------------------------------------------- */
+	/** -----------------------------------ADMIN--------------------------------------------- */
+	/** ------------------------------------------------------------------------------------- */
+	
+	
 	
 	@PostMapping("/admin/reg/location")
 	public String registerNewLocation(
@@ -177,33 +214,6 @@ public class AppController {
 		
 		
 		return targetPage;
-	}
-	
-	@GetMapping("/game/search/player")
-	public String getAllGameByPlayer(
-				Model model, 
-				@RequestParam("userid") int userId,
-				@RequestParam("searchedplayer") int searchedPlayerId
-			) {
-		
-		String targetPage = "";
-		
-		GameDtoList gameDtoList = service.getAllGamesByPlayerId(userId, searchedPlayerId);
-		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
-		
-		if(gameDtoList != null) {
-			
-			model.addAttribute("gamedtolist", gameDtoList);
-			targetPage = "game.html";
-		
-		}else {
-			
-			model.addAttribute("error", errorDto);
-			targetPage = "login.html";
-		}
-		
-		return targetPage;
-				
 	}
 
 	@PostMapping("/admin/reg/game")
