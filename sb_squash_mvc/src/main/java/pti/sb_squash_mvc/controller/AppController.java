@@ -151,89 +151,6 @@ public class AppController {
 		return targetPage;
 	}
 	
-	@PostMapping("/admin/reg/location")
-	public String registerNewLocation(
-			Model model,
-			@RequestParam("adminid") int adminId,
-			@RequestParam("locname") String locName,
-			@RequestParam("address") String locAddress,
-			@RequestParam("fee") int fee) {
-		
-		String targetPage = "";
-		
-		AdminDto adminDto = service.registerNewLocation( adminId,locName,locAddress,fee);
-		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
-		
-		if(adminDto != null) {
-			model.addAttribute("admindto", adminDto);
-			targetPage = "admin.html";
-			
-		}else {
-			 
-			model.addAttribute("error", errorDto);
-			
-			targetPage = "login.html";  
-		}
-		
-		
-		
-		return targetPage;
-	}
-	
-	@GetMapping("/game/search/player")
-	public String getAllGameByPlayer(
-				Model model, 
-				@RequestParam("userid") int userId,
-				@RequestParam("searchedplayer") int searchedPlayerId
-			) {
-		
-		String targetPage = "";
-		
-		GameDtoList gameDtoList = service.getAllGameByPlayerId(userId, searchedPlayerId);
-		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
-		
-		if(gameDtoList != null) {
-			
-			model.addAttribute("gamedtolist", gameDtoList);
-			targetPage = "game.html";
-		
-		}else {
-			
-			model.addAttribute("error", errorDto);
-			targetPage = "login.html";
-		}
-		
-		return targetPage;
-				
-	}
-
-	@PostMapping("/admin/reg/player")
-	public String regNewPlayer(
-			Model model,
-			@RequestParam("adminid") int adminId,
-			@RequestParam("playername") String playerName
-			) {
-		
-		String targetPage = "";
-		
-		AdminDto adminDto = service.regPlayer(adminId, playerName);
-		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
-		
-		if(adminDto != null) {
-			
-			model.addAttribute("admindto", adminDto);
-			targetPage = "admin.html";
-		}
-		else {
-			
-			model.addAttribute("error", errorDto);
-			targetPage = "login.html";
-		}
-		
-		
-		return targetPage;
-	}
-	
 	@GetMapping("/game/search/player")
 	public String getAllGameByPlayer(
 				Model model, 
@@ -338,7 +255,32 @@ public class AppController {
 		
 	}
 	
-	
+	@PostMapping("/admin/reg/player")
+	public String regNewPlayer(
+			Model model,
+			@RequestParam("adminid") int adminId,
+			@RequestParam("playername") String playerName
+			) {
+		
+		String targetPage = "";
+		
+		AdminDto adminDto = service.regPlayer(adminId, playerName);
+		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
+		
+		if(adminDto != null) {
+			
+			model.addAttribute("admindto", adminDto);
+			targetPage = "admin.html";
+		}
+		else {
+			
+			model.addAttribute("error", errorDto);
+			targetPage = "login.html";
+		}
+		
+		
+		return targetPage;
+	}
 	
 }
 
