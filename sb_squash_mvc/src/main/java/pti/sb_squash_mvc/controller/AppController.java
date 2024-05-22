@@ -1,5 +1,7 @@
 package pti.sb_squash_mvc.controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,20 +39,25 @@ public class AppController {
 			@RequestParam("userid") int userId,
 			@RequestParam("newpsw") String newPsw) {
 		
-		UserDto userDto = service.changePassword(userId, newPsw);
 		
-		model.addAttribute("userdto", userDto);
+		
+		/* UserDto userDto = */service.changePassword(userId, newPsw);
+		GameDtoList gameDtoList = service.getGameDtoList(userId, null, null);
+//		gameDtoList.sortGameDates();
+		
+//		model.addAttribute("userdto", userDto);
+		model.addAttribute("gamedtolist", gameDtoList);
 		
 		return "game.html";
 	}
 	
-	@GetMapping("/game/search/location")
+	@PostMapping("/game/search/location")
 	public String getAllGameByLocataion(Model model,
 			@RequestParam("userid") int userId,
 			@RequestParam("location") String location) {
 		String targetPage = "";
 		
-		GameDtoList gameDtoList = service.getAllGameByLocation(userId, location);
+		GameDtoList gameDtoList = service.getGameDtoList(userId, location, null);
 		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
 		
 		
@@ -109,6 +116,8 @@ public class AppController {
 				targetPage = "admin.html";
 			}
 			else {
+				service.loginUser(user.getId());
+				
 				
 				/**Ha nem változtatta meg a jelszavát akkor a megváltoztató oldal a cél*/
 				if(user.isChangedPwd() == false) {
@@ -120,10 +129,9 @@ public class AppController {
 				/**Ha megváltoztatta már akkor pedig game.html*/
 				else if(user.isChangedPwd() == true){
 					
-					UserDto userDto = new UserDto(user.getId(), user.getName());
-					GameDtoList gameDtoList = service.getGameDtoList(userDto);
-					gameDtoList.sortGameDates();
-					service.loginUser(user.getId());
+//					UserDto userDto = new UserDto(user.getId(), user.getName());
+					GameDtoList gameDtoList = service.getGameDtoList(user.getId(), null, null);
+//					gameDtoList.sortGameDates();
 					
 					model.addAttribute("gamedtolist", gameDtoList);
 					targetPage = "game.html";
@@ -225,6 +233,112 @@ public class AppController {
 		
 		return targetPage;
 	}
+	
+	@GetMapping("/game/search/player")
+	public String getAllGameByPlayer(
+				Model model, 
+				@RequestParam("userid") int userId,
+				@RequestParam("searchedplayer") int searchedPlayerId
+			) {
+		
+		String targetPage = "";
+		
+		GameDtoList gameDtoList = service.getGameDtoList(userId, null, searchedPlayerId);
+		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
+		
+		if(gameDtoList != null) {
+			
+			model.addAttribute("gamedtolist", gameDtoList);
+			targetPage = "game.html";
+		
+		}else {
+			
+			model.addAttribute("error", errorDto);
+			targetPage = "login.html";
+		}
+		
+		return targetPage;
+				
+	}
+	
+	
+	
+	/** ------------------------------------------------------------------------------------- */
+	/** -----------------------------------ADMIN--------------------------------------------- */
+	/** ------------------------------------------------------------------------------------- */
+	
+	
+	
+	@PostMapping("/admin/reg/location")
+	public String registerNewLocation(
+			Model model,
+			@RequestParam("adminid") int adminId,
+			@RequestParam("locname") String locName,
+			@RequestParam("address") String locAddress,
+			@RequestParam("fee") int fee) {
+		
+		String targetPage = "";
+		
+		AdminDto adminDto = service.registerNewLocation( adminId,locName,locAddress,fee);
+		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
+		
+		if(adminDto != null) {
+			model.addAttribute("admindto", adminDto);
+			targetPage = "admin.html";
+			
+		}else {
+			 
+			model.addAttribute("error", errorDto);
+			
+			targetPage = "login.html";  
+		}
+		
+		
+		
+		return targetPage;
+	}
+
+	@PostMapping("/admin/reg/game")
+	public String registerNewGame(
+				Model model,
+				@RequestParam("adminid") int adminId,
+				@RequestParam("player1id") int player1_id,
+				@RequestParam("player1score") int score_player1,
+				@RequestParam("player2id") int player2_id,
+				@RequestParam("player2score") int score_player2,
+				@RequestParam("locationid") int locationId,
+				@RequestParam("localdate") LocalDateTime date
+			
+			) {
+		
+		String targetPage = "";
+		
+		AdminDto adminDto = service.registerNewGame(
+				adminId, player1_id, 
+				score_player1, 
+				player2_id, 
+				score_player2, 
+				locationId, 
+				date);
+		
+		ErrorDto errorDto = new ErrorDto("Sorry You need to log in!!");
+		
+		if(adminDto != null) {
+			
+			model.addAttribute("admindto", adminDto);
+			targetPage = "admin.html";
+		
+		}else {
+			
+			model.addAttribute("errordto", errorDto);
+			targetPage = "login.html";
+		}
+		
+		return targetPage;
+		
+	}
+	
+	
 	
 }
 

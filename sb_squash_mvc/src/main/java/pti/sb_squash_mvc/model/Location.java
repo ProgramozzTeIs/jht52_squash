@@ -22,7 +22,7 @@ public class Location {
 	@Column(name="address")
 	private String address;
 	
-	@Column(name="rent/hour(HUF)")
+	@Column(name="rent/hour (HUF)")
 	private int rentFee;
 	
 	public Location() {

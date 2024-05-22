@@ -30,7 +30,7 @@
 
 		<form action="/logout" method="post">
 			<input type="hidden" name="userid" th:value="${gamedtolist.getLoggedInUser().getId()}"/>	
-			<input type="submit" placeholder="logout"/>
+			<input type="submit" value ="Logout"/>
 		
 		</form>
 		
@@ -38,12 +38,14 @@
 		
 		<p> You can find here all matches for the choosen Location</p>
 		
+
 		<form th:if = "${gamedtolist} != null " action="/game/search/location" method="get">
 			<input type="hidden" name="userid" th:value="${userdto.getId()}"/>
+
 			<select name ="location" >
 			
-				<option th:each = "locationDto  : ${gamedtolist.getAllLocations()}" th:text = "${locationDto.getName()}"
-					th:value ="${locationDto.getName()}"/>
+				<option th:each = "locationDto  : ${gamedtolist.getAllLocations()}" th:text = "${locationDto.getLocationName()}"
+					th:value ="${locationDto.getLocationId()}"/>
 				
 			</select>
 			<input type = "submit"/>
@@ -58,7 +60,7 @@
 			<select name ="searchedplayer" >
 			
 				<option th:each = "userDto  : ${gamedtolist.getAllPlayers()}" th:text = "${userDto.getName()}"
-					th:value ="${userDto.getName()}"/>
+					th:value ="${userDto.getId()}"/>
 				
 			</select>
 			<input type = "submit"/>

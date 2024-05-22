@@ -17,13 +17,27 @@
 			<input type ="submit"/>
 		</form>
 	
-		<p>Register player here</p>
+		<br/>
+		
+		<p>Registration - New Game</p>
+		<form action="/admin/reg/game" method="post">
+			<input type = "hidden" name = "adminid" th:value = "${admindto.getUserid()}"/>
+			<input type ="text" name ="player1id" placeholder ="Player1 ID"/>
+			<input type ="text" name ="player1score" placeholder ="Player1 Score"/>
+			<input type ="text" name ="player2id" placeholder ="Player 2 ID"/>
+			<input type ="text" name ="player2score" placeholder ="Player2 Score"/>
+			<input type ="text" name ="locationid" placeholder ="Location ID"/>
+			<input type ="datetime-local" name ="localdate" placeholder ="Date"/>
+			<input type = "submit"/>
+		
+		</form>
+		
+			<p>Register player here</p>
 		<form action="/admin/reg/player" method="post">
 			<input type="hidden" name="adminid" th:value="${admindto.getUserid()}"/>
 			<input type="text" name="playername" placeholder="Player Name"/>
 			<input type="submit"/>
 		</form>
-	
 	
 	</body>
 </html>

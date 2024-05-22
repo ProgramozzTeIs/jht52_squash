@@ -24,10 +24,10 @@ public class Game {
 	@Column(name="player2_id")
 	private int player2_id;
 	
-	@Column(name="player1_score")
+	@Column(name="score_player1")
 	private int player1_score;
 	
-	@Column(name="player2_score")
+	@Column(name="score_player2")
 	private int player2_score;
 	
 	@Column(name="location_id")
