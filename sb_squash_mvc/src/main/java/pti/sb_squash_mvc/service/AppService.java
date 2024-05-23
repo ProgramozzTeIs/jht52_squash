@@ -65,82 +65,6 @@ public class AppService {
 		return user;
 	}
 
-	public GameDtoList getAllGameByLocation(int userId, String searchedLocation) {
-		
-		GameDtoList gameDtoList = null;
-		
-		List<UserDto> userDtos = new ArrayList<>();
-		List<User> allUsers = db.getAllPlayer();
-		for(int index_allPlayers = 0; index_allPlayers < allUsers.size();index_allPlayers++) {
-			User currentUser = allUsers.get(index_allPlayers);
-			UserDto currUserDto = new UserDto(currentUser.getId(), currentUser.getName());
-			userDtos.add(currUserDto);
-		}
-		
-		UserDto userDto = null;
-		User user = db.getPlayerById(userId);
-			if(user.isLoggedin() == true && user.isChangedPwd()== true) {
-				
-				userDto = convertUserToUserDto(user);
-				
-				List<Location> locations = db.getAllLocations();
-				List<LocationDto> locationDtos = new ArrayList<>();
-				
-				int locationId = 0;
-				for(int index_loc = 0; index_loc < locations.size(); index_loc++) {
-					Location currLocation = locations.get(index_loc);
-					
-					LocationDto currLocationDto = new LocationDto(currLocation.getId(),currLocation.getName());
-					locationDtos.add(currLocationDto);
-					if(searchedLocation.equals(currLocation.getName())) {
-						locationId = currLocation.getId();
-						
-					}
-					
-				}
-				List<GameDto> gameDtos = new ArrayList<>();
-				List<Game> allGames = db.getAllGames();
-				List<GameDto> allGamesByLocation = new ArrayList<>();
-				
-				for(int index = 0; index < allGames.size(); index++) {
-					Game currentGame = allGames.get(index);
-					if(currentGame.getLocation_id() == locationId ){
-						GameDto gameDto = convertGameToGameDto(currentGame);
-						
-						allGamesByLocation.add(gameDto);
-					}
-				}
-				
-				
-				gameDtoList = new GameDtoList(gameDtos,userDtos,locationDtos,userDto );
-				gameDtoList.sortGameDates();
-				
-			}else {
-				gameDtoList = null;
-			}
-		
-		return gameDtoList;
-
-	}
-
-	
-	private GameDto convertGameToGameDto(Game game) {
-		GameDto gameDto = null;
-		User user1 = db.getPlayerById(game.getPlayer1_id());
-		User user2 = db.getPlayerById(game.getPlayer2_id());
-		Location location = db.getLocationById(game.getLocation_id());
-		
-		gameDto = new GameDto(
-				user1.getName(),
-				game.getPlayer1_score(),
-				user2.getName(),
-				game.getPlayer2_score(),
-				location.getName(),
-				game.getDate());
-		
-		return gameDto;
-	}
-
 	private UserDto convertUserToUserDto(User user) {
 		UserDto userDto = new UserDto(user.getId(),user.getName());
 		
@@ -202,8 +126,8 @@ public class AppService {
 			Location location = db.getLocationById(currentGame.getLocation_id());
 			
 			
-			if( ((location.getName().equals(locationName)) || (location == null)) &&
-					((player1.getId() == playerId) || (player2.getId() == playerId) || (playerId == null)) ) {
+			if( ((locationName == null) || (location.getName().equals(locationName))) &&
+					((playerId == null) || (player1.getId() == playerId) || (player2.getId() == playerId)) ) {
 				
 				GameDto gameDto = new GameDto(
 						player1.getName(),
@@ -276,17 +200,17 @@ public class AppService {
 			String randomPassword = "";
 			String randomCharacters = "";
 			
-			String randomNumber = 100 + random.nextInt(900) + "";
 			
+			int randomNumber = 100 + random.nextInt(900);
+
+			String characters = "QWERTZUIOPASDFGHJKLYXCVBNMqwertzuo";
 			for(int index = 0; index < 3; index++) {
-				
-				char randomChar = (char) ('a' + random.nextInt(26)) ;
-				randomCharacters += randomChar;
-		
+
+				randomCharacters += characters.charAt( random.nextInt( characters.length() ) );
 			}
 			
-			randomPassword = randomCharacters + randomNumber;
 			
+			randomPassword = randomCharacters + randomNumber;
 			User registeredPlayer = new User(
 					0,
 					playerName,

@@ -39,13 +39,13 @@
 		<p> You can find here all matches for the choosen Location</p>
 		
 
-		<form th:if = "${gamedtolist} != null " action="/game/search/location" method="get">
-			<input type="hidden" name="userid" th:value="${userdto.getId()}"/>
+		<form action="/game/search/location" method="get">
+			<input type="hidden" name="userid" th:value="${gamedtolist.getLoggedInUser().getId()}"/>
 
-			<select name ="location" >
+			<select name ="locationname" >
 			
 				<option th:each = "locationDto  : ${gamedtolist.getAllLocations()}" th:text = "${locationDto.getLocationName()}"
-					th:value ="${locationDto.getLocationId()}"/>
+					th:value ="${locationDto.getLocationName()}"/>
 				
 			</select>
 			<input type = "submit"/>
@@ -55,8 +55,8 @@
 		
 		<p> Choose a Player! </p>
 		
-		<form th:if = "${gamedtolist} != null " action="/game/search/player " method="get">
-			<input type="hidden" name="userid" th:value="${userdto.getId()}"/>
+		<form action="/game/search/player " method="get">
+			<input type="hidden" name="userid" th:value="${gamedtolist.getLoggedInUser().getId()}"/>
 			<select name ="searchedplayer" >
 			
 				<option th:each = "userDto  : ${gamedtolist.getAllPlayers()}" th:text = "${userDto.getName()}"
