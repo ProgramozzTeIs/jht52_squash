@@ -16,6 +16,7 @@
 				<th>Player2 Score</th>
 				<th>Location</th>
 				<th>Date</th>
+				<th>EurFee</th>
 			</tr>
 			<tr th:each="gamedto : ${gamedtolist.getGameDtos()}" >
 				<td th:text= "${gamedto.getPlayer1Name()}"></td>
@@ -24,6 +25,7 @@
 				<td th:text= "${gamedto.getPlayer2Score()}"></td>
 				<td th:text= "${gamedto.getLocationName()}"></td>
 				<td th:text= "${gamedto.getDate()}"></td>
+				<td th:text= "${gamedto.getEurfee()} + 'Eur/Hour'"></td>
 			</tr>	
 				
 		</table>

@@ -7,6 +7,7 @@ import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import pti.sb_squash_mvc.db.Database;
 import pti.sb_squash_mvc.dto.AdminDto;
@@ -14,6 +15,7 @@ import pti.sb_squash_mvc.dto.GameDto;
 import pti.sb_squash_mvc.dto.GameDtoList;
 import pti.sb_squash_mvc.dto.LocationDto;
 import pti.sb_squash_mvc.dto.UserDto;
+import pti.sb_squash_mvc.model.ChangeRate;
 import pti.sb_squash_mvc.model.Game;
 import pti.sb_squash_mvc.model.Location;
 import pti.sb_squash_mvc.model.User;
@@ -118,6 +120,9 @@ public class AppService {
 		List<User> usersFromDb = db.getAllPlayer();
 		List<Location> locationsFromDb = db.getAllLocations();
 		
+		RestTemplate rt = new RestTemplate();
+		ChangeRate changeRate = rt.getForObject("http://localhost:8081/change", ChangeRate.class);
+		
 		for(int index = 0; index < gamesFromDb.size(); index++) {
 			
 			Game currentGame = gamesFromDb.get(index);
@@ -129,13 +134,17 @@ public class AppService {
 			if( ((locationName == null) || (location.getName().equals(locationName))) &&
 					((playerId == null) || (player1.getId() == playerId) || (player2.getId() == playerId)) ) {
 				
+				double changedEur = location.getRentFee()/changeRate.getEur();
+				
+				
 				GameDto gameDto = new GameDto(
 						player1.getName(),
 						currentGame.getPlayer1_score(),
 						player2.getName(),
 						currentGame.getPlayer2_score(),
 						location.getName(),
-						currentGame.getDate()
+						currentGame.getDate(),
+						changedEur
 						);
 				gameDtos.add(gameDto);
 			}

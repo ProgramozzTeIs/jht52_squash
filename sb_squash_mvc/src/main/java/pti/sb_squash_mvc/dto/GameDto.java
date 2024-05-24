@@ -11,13 +11,11 @@ public class GameDto {
 	private int player2Score;
 	private String locationName;
 	private LocalDateTime date;
+	private double eurfee;
 	
-	
-	
-
 
 	public GameDto(String player1Name, int player1Score, String player2Name, int player2Score, String locationName,
-			LocalDateTime date) {
+			LocalDateTime date, double eurfee) {
 		super();
 		this.player1Name = player1Name;
 		this.player1Score = player1Score;
@@ -25,6 +23,7 @@ public class GameDto {
 		this.player2Score = player2Score;
 		this.locationName = locationName;
 		this.date = date;
+		this.eurfee = eurfee;
 	}
 
 
@@ -86,12 +85,26 @@ public class GameDto {
 	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
+	
+
+	public double getEurfee() {
+		
+		double roundedEurFee = Math.round(this.eurfee);
+		
+		return roundedEurFee;
+	}
+
+
+	public void setEurfee(double eurfee) {
+		this.eurfee = eurfee;
+	}
 
 
 	@Override
 	public String toString() {
 		return "GameDto [player1Name=" + player1Name + ", player1Score=" + player1Score + ", player2Name=" + player2Name
-				+ ", player2Score=" + player2Score + ", locationName=" + locationName + ", date=" + date + "]";
+				+ ", player2Score=" + player2Score + ", locationName=" + locationName + ", date=" + date + ", eurfee="
+				+ eurfee + "]";
 	}
-	
+
 }
