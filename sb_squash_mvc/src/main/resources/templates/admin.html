@@ -38,6 +38,28 @@
 			<input type="text" name="playername" placeholder="Player Name"/>
 			<input type="submit"/>
 		</form>
+		
+		<br/>
+		
+		<form action="/logout" method ="post">
+			<input type="hidden" name ="userid" th:value="${admindto.getUserid()}"/>
+			<input type="submit" value="logout"	/>	
+		</form>
 	
 	</body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
